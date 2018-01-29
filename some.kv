@@ -5,52 +5,100 @@
 <MyLabel@Label>
 	font_size:50
 
-Dis:
-<Dis>:
-	rows:5
-	BoxLayout:
-	    MyLabel:
-			text:"Length :" 
-		TextInput:
-			id:pwdlen
-			font_size:80
-			multiline:False
-	BoxLayout:
-	    MyLabel:
-			text:"Keyword  :"
-		TextInput:
-			id:keywd
-			font_size:60
-			multiline:False
-	BoxLayout:
-	    MyLabel:
-			text:"Registered Username:"
-			font_size:40
-		TextInput:
-			id:usrname
-			font_size:30
-			multiline:False
-	BoxLayout:
-		MyLabel:
-			text:"Password :"
-		TextInput:
-			id:pwd
-			font_size:30
-			multiline:False
+screenmanage:
+    transition:FadeTransition()
+    MainScreen:
+    GenerateScreen:
+    RetrieveScreen:
 
-			
-	BoxLayout:
-		MyButton:
-			text:"Generate"
-			on_press:root.generatepwd()
-			on_press:pwd.disabled=True
-			on_release:pwd.text = root.password
-		MyButton:
-			text:"Clear"
-			on_press:pwdlen.text=""
-			on_press:root.clear()
-			on_press:pwd.disabled=False
-			on_press:pwd.text=""
-		MyButton:
-			text:"Save"
-			on_press:root.savepwd()
+
+<GenerateScreen>:
+    name:"gen"
+    GridLayout:
+        rows:5
+        BoxLayout:
+            MyLabel:
+                text:"Length :"
+            TextInput:
+                id:pwdlen
+                font_size:80
+                multiline:False
+        BoxLayout:
+            MyLabel:
+                text:"Keyword  :"
+            TextInput:
+                id:keywd
+                font_size:60
+                multiline:False
+        BoxLayout:
+            MyLabel:
+                text:"Registered Username:"
+                font_size:40
+            TextInput:
+                id:usrname
+                font_size:30
+                multiline:False
+        BoxLayout:
+            MyLabel:
+                text:"Password :"
+            TextInput:
+                id:pwd
+                font_size:30
+                multiline:False
+
+
+        BoxLayout:
+            MyButton:
+                text:"Generate"
+                on_press:root.generatepwd()
+                on_press:pwd.disabled=True
+                on_release:pwd.text = root.password
+            MyButton:
+                text:"Clear"
+                on_press:pwdlen.text=""
+                on_press:root.clear()
+                on_press:pwd.disabled=False
+                on_press:pwd.text=""
+            MyButton:
+                text:"Save"
+                on_press:root.savepwd()
+            MyButton:
+                on_release:app.root.current="main"
+                text:"Main Menu"
+<MainScreen>:
+    name:"main"
+    GridLayout:
+        cols:2
+        MyButton:
+            on_release:app.root.current="gen"
+            text:"Generate"
+        MyButton:
+            on_release:app.root.current="ret"
+            text:"Retrieve"
+
+<RetrieveScreen>
+    name:"ret"
+    GridLayout:
+        rows:2
+        BoxLayout:
+            MyLabel:
+                text:"Registered Username:"
+                font_size:40
+            TextInput:
+                id:ret_usrname
+                font_size:30
+                multiline:False
+
+        BoxLayout:
+            MyButton:
+                text:"Fetch"
+                on_press:root.Fetch()
+            MyButton:
+                text:"Clear"
+                on_press:ret_usrname.text=''
+            MyButton:
+                text:"Main Menu"
+                on_release:app.root.current="main"
+
+
+
