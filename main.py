@@ -12,6 +12,13 @@ from kivy.core.clipboard import Clipboard
 from simplecrypt import encrypt,decrypt
 import sqlite3
 
+'''
+To set up forced dimensions of the applications 
+
+from kivy.config import Config
+Config.set('graphics', 'width', '500')
+Config.set('graphics', 'height', '700')
+'''
 
 # setting up the database connections 
 
@@ -21,17 +28,9 @@ cursor.execute(''' CREATE TABLE IF NOT EXISTS pwd (username varchar(50),password
 db.commit()
 
 
-
-
-
-#Dictionary to store the usernames and passwords
-IDS ={}
-
-
 class MainScreen(Screen):
     pass
 class GenerateScreen(Screen):
-    global IDS
     length = NumericProperty()
     password = StringProperty('')
     keyword = StringProperty('')
@@ -57,7 +56,7 @@ class GenerateScreen(Screen):
             result = ''.join(result)
             self.password = result
 
-            # class to save the password and copy it to the clipboard using pyperclip
+           
 
     def savepwd(self):
         encryped_pass = encrypt("password",self.password)
@@ -93,22 +92,12 @@ class RetrieveScreen(Screen):
         popup = Popup(title='Saved !', content=Label(text='Copied to clipboard'), size_hint=(None, None),size=(400, 200))
         popup.open()
        
-    
-
-
 class screenmanage(ScreenManager):
+        pass
+
+class PWManagerapp(App):
     pass
-
-
-
-
-
-
-
-class someapp(App):
-    pass
-
 
 if __name__ == '__main__':
-    someapp = someapp()
-    someapp.run()
+    PWManagerapp = PWManagerapp()
+    PWManagerapp.run()
