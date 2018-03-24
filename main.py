@@ -9,6 +9,20 @@ from random import shuffle
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import ScreenManager,Screen,FadeTransition
 from kivy.core.clipboard import Clipboard
+from simplecrypt import encrypt,decrypt
+import sqlite3
+
+
+# setting up the database connections 
+
+db = sqlite3.connect("pwddb")
+cursor = db.cursor()
+cursor.execute(''' CREATE TABLE IF NOT EXISTS pwd (username varchar(50),password text)''')
+db.commit()
+
+
+
+
 
 #Dictionary to store the usernames and passwords
 IDS ={}
@@ -46,12 +60,21 @@ class GenerateScreen(Screen):
             # class to save the password and copy it to the clipboard using pyperclip
 
     def savepwd(self):
-        IDS[self.ids.usrname.text] = self.password
+        encryped_pass = encrypt("password",self.password)
+        IDS[self.ids.usrname.text] = encryped_pass
         #copy(IDS[self.ids.usrname.text])
+        # print (IDS)
+        # saving the data in database 
+        u_name = self.ids.usrname.text
+        #print(self.ids.usrname.text)
+        #print(encryped_pass)
+        cursor.execute(''' INSERT INTO pwd values(?,?)''',(u_name,encryped_pass))
+        db.commit()
         Clipboard.copy(self.password)
         popup = Popup(title='Saved !', content=Label(text='Copied to clipboard'), size_hint=(None, None),
                       size=(400, 200))
         popup.open()
+        
 
     def clear(self):
         self.length = 0
@@ -60,16 +83,17 @@ class GenerateScreen(Screen):
 class RetrieveScreen(Screen):
     global IDS
     def Fetch(self):
-            if(self.ids.ret_usrname.text in IDS):
-                pwd = IDS[self.ids.ret_usrname.text]
-                Clipboard.copy(pwd)
-                popup = Popup(title='Saved !', content=Label(text='Copied to clipboard'), size_hint=(None, None),size=(400, 200))
-                popup.open()
-            else:
-                popup = Popup(title='Error', content=Label(text='Username Not Found'), size_hint=(None, None),
-                              size=(400, 200))
-                popup.open()
-
+        #fetch data from db 
+        u_name = self.ids.ret_usrname.text
+        cursor.execute('''select password from pwd where username = ?''',(u_name,))
+        data = cursor.fetchone()
+        print(data[0])
+        decrypted_pass = decrypt("password",data[0]).decode("utf-8")
+        Clipboard.copy(decrypted_pass)
+        popup = Popup(title='Saved !', content=Label(text='Copied to clipboard'), size_hint=(None, None),size=(400, 200))
+        popup.open()
+       
+    
 
 
 class screenmanage(ScreenManager):
