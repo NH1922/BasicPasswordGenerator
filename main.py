@@ -60,13 +60,7 @@ class GenerateScreen(Screen):
 
     def savepwd(self):
         encryped_pass = encrypt("password",self.password)
-        IDS[self.ids.usrname.text] = encryped_pass
-        #copy(IDS[self.ids.usrname.text])
-        # print (IDS)
-        # saving the data in database 
         u_name = self.ids.usrname.text
-        #print(self.ids.usrname.text)
-        #print(encryped_pass)
         cursor.execute(''' INSERT INTO pwd values(?,?)''',(u_name,encryped_pass))
         db.commit()
         Clipboard.copy(self.password)
