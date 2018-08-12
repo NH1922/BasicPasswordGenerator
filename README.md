@@ -2,8 +2,9 @@
 A basic application in kivy to generate a random password consisting of a keyword given by the user
 
 Simple-Password-Generator provides the user with two functionalities 
-1. Generate 
-2. Retrieve 
+
+	1. Generate 
+	2. Retrieve 
 
 In the generate mode a password is generated for the user on the basis length and a specific keyword provided by the user. 
 The password will contain Upper case characters,Lower case characters, digits and special character ('_','-').
