@@ -1,4 +1,4 @@
-# Simple-Password-Generator---Kivy
+# Basic Password Generator in Kivy 
 A basic application in kivy to generate a random password consisting of a keyword given by the user
 
 Simple-Password-Generator provides the user with two functionalities 
